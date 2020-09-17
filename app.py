@@ -54,7 +54,7 @@ def index():
 @app.route('/en/')
 def home():
     print('at home')
-    return render_template('home.html', username=get_username())
+    return render_template('home.html', username=get_username().capitalize())
 
 
 
