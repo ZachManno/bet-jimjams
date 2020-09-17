@@ -1,5 +1,6 @@
 from flask import Flask
-from flask_simplelogin import SimpleLogin
+from flask import render_template
+from flask_simplelogin import SimpleLogin, get_username, login_required
 import os
 
 
@@ -16,11 +17,6 @@ def load_configs():
     return secret_key, login_dict
 
 
-secret_key, user_login_dict = load_configs()
-
-print('User login dict: ' + str(user_login_dict))
-
-
 def only_jimjams_users_login(user):
     """:param user: dict {'username': 'foo', 'password': 'bar'}"""
     username = user.get('username')
@@ -31,13 +27,23 @@ def only_jimjams_users_login(user):
     return False  # <--- Denied
 
 
+
+secret_key, user_login_dict = load_configs()
+#print('User login dict: ' + str(user_login_dict))
+
 app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key
+app.config['SIMPLELOGIN_HOME_URL'] = '/en/'
 SimpleLogin(app, login_checker=only_jimjams_users_login)
 
 
 
 
+
+# ---------------------------------------------
+# ---------- Routes Start ---------------------
+# ---------------------------------------------
+# ---------------------------------------------
 
 @app.route('/')
 def index():
@@ -45,11 +51,10 @@ def index():
     <p style="font-size:xx-large"> <b>Jimjams BET HQ</b> </p>
     """
 
-@app.route('/home')
+@app.route('/en/')
 def home():
-    return """
-    <p style="font-size:xx-large"> <b>HOME</b> </p>
-    """
+    print('at home')
+    return render_template('home.html', username=get_username())
 
 
 
