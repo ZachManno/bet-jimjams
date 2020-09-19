@@ -1,5 +1,6 @@
 from flask import Flask
 from flask import render_template
+from flask_bootstrap import Bootstrap
 from flask_simplelogin import SimpleLogin, get_username, login_required
 import os
 
@@ -35,6 +36,7 @@ app = Flask(__name__)
 app.config['SECRET_KEY'] = secret_key
 app.config['SIMPLELOGIN_HOME_URL'] = '/en/'
 SimpleLogin(app, login_checker=only_jimjams_users_login)
+bootstrap = Bootstrap(app)
 
 
 
@@ -47,9 +49,7 @@ SimpleLogin(app, login_checker=only_jimjams_users_login)
 
 @app.route('/')
 def index():
-    return """
-    <p style="font-size:xx-large"> <b>Jimjams BET HQ</b> </p>
-    """
+    return render_template('index.html')
 
 @app.route('/en/')
 def home():
