@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+
+{% block content %}
+  <div class="cotainer">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card">
+                    <div class="card-header">Login</div>
+                    <div class="card-body">
+                        <form action="{{ url_for('simplelogin.login') }}" method="post">
+                          {{ form.csrf_token }}
+                            <div class="form-group row">
+                                <label for="username" class="col-md-4 col-form-label text-md-right">Username</label>
+                                <div class="col-md-6">
+                                    {{ form.username }}
+                                </div>
+                            </div>
+
+                            <div class="form-group row">
+                                <label for="password" class="col-md-4 col-form-label text-md-right">Password</label>
+                                <div class="col-md-6">
+                                    {{ form.password }}
+                                </div>
+                            </div>
+
+                            <div class="col-md-6 offset-md-4">
+                                <button type="submit" class="btn btn-primary" value="Send">
+                                    Login
+                                </button>
+                                <a href="mailto:zacharymanno@gmail.com" class="btn btn-link">
+                                    Forgot password?
+                                </a>
+                            </div>
+                    </div>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}

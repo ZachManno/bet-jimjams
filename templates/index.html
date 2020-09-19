@@ -4,11 +4,19 @@
   {{ super() }}
 {% endblock %}
 {% block content %}
-  <h1>Jimjams BET HQ</h1>
-  <p class="important">
-    Hometown LOCK tracker
-  </p>
+<div class="cotainer">
+    <div class="row justify-content-center">
+      <h1>Jimjams BET HQ</h1>
+    </div>
+    <div class="row justify-content-center">
+          <p class="important">
+            Hometown LOCK tracker
+          </p>
+    </div>
+      <div class="row justify-content-center">
+        <a class="btn btn-info" href="/login" value="Enter Site">Enter Site</a>
+      </div>
+</div>
 
-<a class="btn btn-primary" href="/login" value="Login">Login</a>
 
 {% endblock %}
