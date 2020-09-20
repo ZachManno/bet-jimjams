@@ -1,1 +1,16 @@
-<p style="font-size:xx-large"> <b>Welcome {{ username }}</b> </p>
+{% extends "base.html" %}
+{% from 'bootstrap/table.html' import render_table %}
+
+
+{% block head %}
+  {{ super() }}
+{% endblock %}
+
+{% block content %}
+<p style="font-size:xx-large"> <b>Welcome {{ username }}, your week 3 LOCKS:</b> </p>
+
+<br>
+
+{{ render_table(data, titles=titles) }}
+
+{% endblock %}
