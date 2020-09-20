@@ -199,7 +199,7 @@ def home():
 
     print("picks list: " + str(picks_list))
 
-    return render_template('home.html', username=get_username().capitalize(), data=picks_list, titles=titles)
+    return render_template('home.html', username=get_username().capitalize(), data=picks_list, titles=titles, table_classes="table-striped table-bordered")
 
 
 
