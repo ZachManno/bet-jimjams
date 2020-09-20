@@ -3,8 +3,6 @@ from flask import render_template, request
 from flask_bootstrap import Bootstrap
 from flask_simplelogin import SimpleLogin, get_username, login_required
 
-from flask_sqlalchemy import SQLAlchemy
-
 import os
 
 
@@ -40,24 +38,64 @@ app.config['SECRET_KEY'] = secret_key
 app.config['SIMPLELOGIN_HOME_URL'] = '/en/'
 SimpleLogin(app, login_checker=only_jimjams_users_login)
 bootstrap = Bootstrap(app)
-db = SQLAlchemy(app)
 
-class Message(db.Model):
-    id = db.Column(db.Integer, primary_key=True)
-    text = db.Column(db.Text, nullable=False)
 
 class Pick:
-    def __init__(self, team="", line='', pick_type=""):
-        self.team = team
+    def __init__(self, pick='', home='', away='', favorite='', line=0, ou=0, pick_type='', pick_string='', game_title='', outcome='UNDECIDED'):
+        self.pick = pick
+        self.home = home
+        self.away = away
+        self.favorite = favorite
         self.line = line
+        self.ou = ou
         self.pick_type = pick_type
-    @property
-    def team(self):
-        return self._team
+        self.outcome = outcome
+        if self.pick_type == 'SPREAD':
+            if self.pick == self.favorite:
+                self.pick_string = self.pick + ' -' + str(self.line)
+            else:
+                self.pick_string = self.pick + ' +' + str(self.line)
+        else:
+            self.pick_string = self.pick
 
-    @team.setter
-    def team(self, value):
-        self._team = value
+        is_favorite_home = self.home == self.favorite
+        self.game_title = self.away + ' @ ' + self.home + ' ('
+        if is_favorite_home:
+            self.game_title += '-' + str(self.line) + ', ' + str(self.ou) + ')'
+        else:
+            self.game_title += '+' + str(self.line) + ', ' + str(self.ou) + ')'
+
+    @property
+    def pick(self):
+        return self._pick
+
+    @pick.setter
+    def pick(self, value):
+        self._pick = value
+
+    @property
+    def home(self):
+        return self._home
+
+    @home.setter
+    def home(self, value):
+        self._home = value
+
+    @property
+    def away(self):
+        return self._away
+
+    @away.setter
+    def away(self, value):
+        self._away = value
+
+    @property
+    def favorite(self):
+        return self._favorite
+
+    @favorite.setter
+    def favorite(self, value):
+        self._favorite = value
 
     @property
     def line(self):
@@ -68,6 +106,14 @@ class Pick:
         self._line = value
 
     @property
+    def ou(self):
+        return self._ou
+
+    @ou.setter
+    def ou(self, value):
+        self._ou = value
+
+    @property
     def pick_type(self):
         return self._pick_type
 
@@ -75,14 +121,29 @@ class Pick:
     def pick_type(self, value):
         self._pick_type = value
 
-db.create_all()
-for i in range(20):
-        m = Message(
-            text='Test message {}'.format(i+1),
-            )
-        db.session.add(m)
+    @property
+    def pick_string(self):
+        return self._pick_string
 
-db.session.commit()
+    @pick_string.setter
+    def pick_string(self, value):
+        self._pick_string = value
+
+    @property
+    def game_title(self):
+        return self._game_title
+
+    @game_title.setter
+    def game_title(self, value):
+        self._game_title = value
+
+    @property
+    def outcome(self):
+        return self._outcome
+
+    @outcome.setter
+    def outcome(self, value):
+        self._outcome = value
 
 
 
@@ -97,43 +158,41 @@ def index():
 
 @app.route('/en/')
 def home():
-    print('at home')
-    data1 = {"pick1": "Vikings"}
-    data2 = {"pick2": "Cowboys"}
-    data_list = []
-    data_list.append(data1)
-    data_list.append(data2)
-
-
-    page = request.args.get('page', 1, type=int)
-    pagination = Message.query.paginate(page, per_page=10)
-    messages = pagination.items
-
-    #titles = [('index', '#'), ('text', 'Pick')]
-    titles = [('team', 'Team'), ('line', 'Line'), ('pick_type', 'Pick Type')]
-
-    print("messages: " + str(messages))
-    print("type messages: " + str(type(messages)))
-
-
+    titles = [('game_title', 'Game'), ('pick_string', 'Pick'), ('pick_type', 'Pick Type'), ('outcome', 'Outcome')]
 
 
     picks_list = []
     p1 = Pick(
-        team="Over",
-        line="56.5",
+        pick="Over",
+        home="Eagles",
+        away="Rams",
+        favorite="Eagles",
+        line=1.5,
+        ou=57.5,
         pick_type="O/U",
     )
     p2 = Pick(
-        team="Vikings",
-        line="-3",
+        pick="Vikings",
+        home="Vikings",
+        away="Bears",
+        favorite="Vikings",
+        line=4,
+        ou=52.5,
         pick_type="SPREAD",
+        outcome="W",
     )
     p3 = Pick(
-        team="Cowboys",
-        line="+4.5",
+        pick="Giants",
+        home="Cardinals",
+        away="Giants",
+        favorite="Cardinals",
+        line=6,
+        ou=48,
         pick_type="SPREAD",
+        outcome="L",
     )
+
+
     picks_list.append(p1)
     picks_list.append(p2)
     picks_list.append(p3)
