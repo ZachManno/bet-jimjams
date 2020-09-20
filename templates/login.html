@@ -4,6 +4,17 @@
   {{ super() }}
 {% endblock %}
 
+{% block messages %}
+   {{super()}}
+   {%if form.errors %}
+     <ul class="alert alert-danger">
+       {% for field, errors in form.errors.items() %}
+         <li>{{field}} {% for error in errors %}{{ error }}{% endfor %}</li>
+       {% endfor %}
+     </ul>
+   {% endif %}
+{% endblock %}
+
 
 {% block content %}
   <div class="cotainer">
