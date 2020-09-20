@@ -42,7 +42,6 @@ SimpleLogin(app, login_checker=only_jimjams_users_login)
 bootstrap = Bootstrap(app)
 
 
-
 # ---------------------------------------------
 # ---------- Routes Start ---------------------
 # ---------------------------------------------
@@ -88,12 +87,9 @@ def home():
         outcome="L",
     )
 
-
     picks_list.append(p1)
     picks_list.append(p2)
     picks_list.append(p3)
-
-    print("picks list: " + str(picks_list))
 
     return render_template('home.html', username=get_username().capitalize(), data=picks_list, titles=titles, table_classes="table-striped table-bordered")
 
