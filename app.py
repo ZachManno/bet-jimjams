@@ -4,6 +4,7 @@ from flask_bootstrap import Bootstrap
 from flask_simplelogin import SimpleLogin, get_username, login_required
 
 import pick
+import dynamo
 
 import os
 
@@ -53,45 +54,17 @@ def index():
 
 @app.route('/en/')
 def home():
+    username = get_username()
     titles = [('game_title', 'Game'), ('pick_string', 'Pick'), ('pick_type', 'Pick Type'), ('outcome', 'Outcome')]
 
+    weeks_available = dynamo.get_weeks_available(username)
+    picks_for_each_week = []
+    for week in weeks_available:
+        picks_for_each_week.append(
+                                   (str(week), dynamo.get_picks_for_user_for_week(username, week)))
 
-    picks_list = []
-    p1 = pick.Pick(
-        pick="Over",
-        home="Eagles",
-        away="Rams",
-        favorite="Eagles",
-        line=1.5,
-        ou=57.5,
-        pick_type="O/U",
-    )
-    p2 = pick.Pick(
-        pick="Vikings",
-        home="Vikings",
-        away="Bears",
-        favorite="Vikings",
-        line=4,
-        ou=52.5,
-        pick_type="SPREAD",
-        outcome="W",
-    )
-    p3 = pick.Pick(
-        pick="Giants",
-        home="Cardinals",
-        away="Giants",
-        favorite="Cardinals",
-        line=6,
-        ou=48,
-        pick_type="SPREAD",
-        outcome="L",
-    )
 
-    picks_list.append(p1)
-    picks_list.append(p2)
-    picks_list.append(p3)
-
-    return render_template('home.html', username=get_username().capitalize(), data=picks_list, titles=titles, table_classes="table-striped table-bordered")
+    return render_template('home.html', username=username.capitalize(), picks_for_each_week=picks_for_each_week, titles=titles, table_classes="table-striped table-bordered table-sm")
 
 
 

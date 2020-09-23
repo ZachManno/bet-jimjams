@@ -7,10 +7,33 @@
 {% endblock %}
 
 {% block content %}
-<p style="font-size:xx-large"> <b>Welcome {{ username }}, your week 3 LOCKS:</b> </p>
+
+<div class="container" style="padding: 2%">
+
+<p style="font-size:xx-large"> <b>Welcome {{ username }}, your LOCKS:</b> </p>
 
 <br>
 
-{{ render_table(data, titles=titles, table_classes=table_classes) }}
+
+
+{% for week, pick_data in picks_for_each_week %}
+  <div class="container" style="padding-bottom: 1%">
+        <div class="row justify-content-center">
+            <div class="col-lg-8">
+                <div class="card border border-primary">
+                    <div class="card-header"> <b>Week {{week}}</b></div>
+                    <div class="card-body">
+                      {{ render_table(pick_data, titles=titles, table_classes=table_classes) }}
+
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endfor %}
+
+
+
+</div>
 
 {% endblock %}
