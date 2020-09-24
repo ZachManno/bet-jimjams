@@ -10,7 +10,19 @@
 
 <div class="container" style="padding: 3%">
 
-<p style="font-size:xx-large"> <b>Welcome {{ username }}, your LOCKS:</b> </p>
+
+<div class="card">
+  <div class="card-body">
+    <div class="row justify-content-center">
+        <h5 class="card-title">Welcome {{ username }}, your LOCKS:</h5>
+    </div>
+    <div class="row justify-content-center">
+        <a href="/lock-form" class="btn btn-success">Add LOCK</a>
+    </div>
+  </div>
+  </div>
+</div>
+
 
 <br>
 
@@ -36,9 +48,9 @@
 
 </div>
 
+<!-- Script to turn "W" green and "L" cells red-->
 <script type="text/javascript">
                   var tds = document.getElementsByTagName("td");
-
                 for(var i = 0, j = tds.length; i < j; ++i) {
                   var td_text = tds[i].innerHTML;
                   if (td_text === 'W') {

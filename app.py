@@ -5,6 +5,7 @@ from flask_simplelogin import SimpleLogin, get_username, login_required
 
 import pick
 import dynamo
+import lock_form
 
 import os
 
@@ -52,7 +53,7 @@ bootstrap = Bootstrap(app)
 def index():
     return render_template('index.html')
 
-@app.route('/en/')
+@app.route('/en/', methods=('GET', 'POST'))
 def home():
     username = get_username()
     titles = [('pick_string', 'Pick'), ('outcome', 'Outcome'), ('game_title', 'Game'), ('pick_type', 'Pick Type')]
@@ -67,5 +68,11 @@ def home():
     return render_template('home.html', username=username.capitalize(), picks_for_each_week=picks_for_each_week, titles=titles, header_classes='text-info', table_classes="table-striped table-bordered table-sm")
 
 
+@app.route('/lock-form/', methods=('GET', 'POST'))
+def lock_form_route():
+    form = lock_form.LockForm()
+    if form.validate_on_submit():
+        return redirect('/en/')
+    return render_template('add-lock.html', form=form)
 
 
