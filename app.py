@@ -55,7 +55,7 @@ def index():
 @app.route('/en/')
 def home():
     username = get_username()
-    titles = [('game_title', 'Game'), ('pick_string', 'Pick'), ('pick_type', 'Pick Type'), ('outcome', 'Outcome')]
+    titles = [('pick_string', 'Pick'), ('outcome', 'Outcome'), ('game_title', 'Game'), ('pick_type', 'Pick Type')]
 
     weeks_available = dynamo.get_weeks_available(username)
     picks_for_each_week = []
@@ -64,7 +64,7 @@ def home():
                                    (str(week), dynamo.get_picks_for_user_for_week(username, week)))
 
 
-    return render_template('home.html', username=username.capitalize(), picks_for_each_week=picks_for_each_week, titles=titles, table_classes="table-striped table-bordered table-sm")
+    return render_template('home.html', username=username.capitalize(), picks_for_each_week=picks_for_each_week, titles=titles, header_classes='text-info', table_classes="table-striped table-bordered table-sm")
 
 
 
