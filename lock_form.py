@@ -5,23 +5,37 @@ from wtforms import (StringField,
                      PasswordField,
                      DateField,
                      SelectField,
-                     TextField)
+                     TextField,
+                     FloatField)
 from wtforms.validators import (DataRequired,
                                 Email,
                                 EqualTo,
                                 Length,
-                                URL)
+                                URL,ValidationError)
 
+
+# def my_length_check(form, field):
+#     if len(field.data) > 50:
+#         raise ValidationError('Field must be less than 50 characters')
+
+def validate_favorite(form, field):
+    if (form.favorite.data not in [form.home.data, form.away.data]):
+        raise ValidationError('Favorite must match the home or away team')
+    else:
+        print("validated")
 
 class LockForm(FlaskForm):
     """Lock form."""
-    name = StringField('Name', [
+    home = StringField('Home', [
         DataRequired()])
-    email = StringField('Email', [
-        Email(message=('Not a valid email address.')),
+    away = StringField('Away', [
         DataRequired()])
-    body = TextField('Message', [
-        DataRequired(),
-        Length(min=4, message=('Your message is too short.'))])
-    recaptcha = RecaptchaField()
+    favorite = StringField('Favorite', [
+        DataRequired(), validate_favorite])
+    pick = StringField('Pick', [
+        DataRequired()])
+    line = FloatField('Line', [
+        DataRequired()])
+
+
     submit = SubmitField('Submit')

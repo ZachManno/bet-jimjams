@@ -1,5 +1,5 @@
 from flask import Flask
-from flask import render_template, request
+from flask import render_template, request, redirect
 from flask_bootstrap import Bootstrap
 from flask_simplelogin import SimpleLogin, get_username, login_required
 
@@ -53,7 +53,7 @@ bootstrap = Bootstrap(app)
 def index():
     return render_template('index.html')
 
-@app.route('/en/', methods=('GET', 'POST'))
+@app.route('/en/')
 def home():
     username = get_username()
     titles = [('pick_string', 'Pick'), ('outcome', 'Outcome'), ('game_title', 'Game'), ('pick_type', 'Pick Type')]
@@ -72,7 +72,9 @@ def home():
 def lock_form_route():
     form = lock_form.LockForm()
     if form.validate_on_submit():
-        return redirect('/en/')
+        return redirect('/en')
+    else:
+        print("Not validated")
     return render_template('add-lock.html', form=form)
 
 

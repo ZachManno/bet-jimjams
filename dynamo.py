@@ -84,8 +84,6 @@ def get_picks_for_user_for_week(username, week):
     for item in PickModel.scan(PickModel.username.is_in(username) & (PickModel.week == week)):
         picks.append(pick_record_to_pick_object(item))
 
-
-    print('picks: ' + picks[0].pick_string)
     return picks
 
 
