@@ -6,7 +6,8 @@ from wtforms import (StringField,
                      DateField,
                      SelectField,
                      TextField,
-                     FloatField)
+                     FloatField,
+                     BooleanField)
 from wtforms.validators import (DataRequired,
                                 Email,
                                 EqualTo,
