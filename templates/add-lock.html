@@ -43,19 +43,27 @@
                     {{ form.away }}
                 </div>
             </div>
-            <div class="form-group row">
+            <div class="form-group row" id="favoriteField">
                 <label for="username" class="col col-form-label text-md-right">{{ form.favorite.label }}</label>
                 <div class="col">
                     {{ form.favorite }}
                 </div>
             </div>
 
-            <div class="form-group row">
+            <div class="form-group row" id="lineId">
                 <label for="username" class="col col-form-label text-md-right">{{ form.line.label }}</label>
                 <div class="col">
                     {{ form.line }}
                 </div>
             </div>
+
+            <div class="form-group row" id="overUnderField">
+                <label for="username" class="col col-form-label text-md-right">{{ form.ou.label }}</label>
+                <div class="col">
+                    {{ form.ou }}
+                </div>
+            </div>
+
             <div class="form-group row">
                 <label for="username" class="col col-form-label text-md-right">{{ form.pick.label }}</label>
                 <div class="col">
@@ -79,6 +87,9 @@
 
 $(document).ready(function(){
 
+        $('#overUnderField').hide();
+
+
         var $radios = $('input:radio[name=pickType]');
 
         if($radios.is(':checked') === false) {
@@ -88,9 +99,15 @@ $(document).ready(function(){
         $('input[type="radio"]').click(function(){
             if($(this).prop("checked") == true && (this.id == 'pickTypeOverUnder') ){
                 console.log("pickTypeOverUnder is checked.");
+                $('#lineId').hide();
+                $('#favoriteField').hide();
+                $('#overUnderField').show();
             }
-            else if($(this).prop("checked") == false){
-                console.log("NONpickTypeOverUnder is unchecked.");
+            else if($(this).prop("checked") == true && (this.id == 'pickTypeSpread') ){
+                console.log("pickTypeSpread is checked.");
+                $('#lineId').show();
+                $('#favoriteField').show();
+                $('#overUnderField').hide();
             }
         });
 });

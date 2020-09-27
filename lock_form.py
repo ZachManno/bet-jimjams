@@ -38,5 +38,8 @@ class LockForm(FlaskForm):
     line = FloatField('Line', [
         DataRequired()])
 
+    ou = FloatField('O/U', [
+        DataRequired()])
+
 
     submit = SubmitField('Submit')
