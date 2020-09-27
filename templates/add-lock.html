@@ -11,7 +11,22 @@
 <div class="container">
   <div class="row justify-content-center">
   <div class="card">
-        <div class="card-header">Create LOCK</div>
+        <div class="card-header">
+          <div class="row justify-content-center">
+          <h3> Create LOCK </h3>
+          </div>
+            <div class="row">
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="pickTypeSpread" name="pickType" class="custom-control-input">
+                  <label class="custom-control-label" for="pickTypeSpread">Spread</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="pickTypeOverUnder" name="pickType" class="custom-control-input">
+                  <label class="custom-control-label" for="pickTypeOverUnder">Over Under</label>
+                </div>
+            </div>
+          </div>
+
         <div class="card-body">
         <form method="POST" action="{{ url_for('lock_form_route') }}">
             {{ form.csrf_token }}
@@ -22,15 +37,12 @@
                     {{ form.home }}
                 </div>
             </div>
-
             <div class="form-group row">
                 <label for="username" class="col col-form-label text-md-right">{{ form.away.label }}</label>
                 <div class="col">
                     {{ form.away }}
                 </div>
             </div>
-
-
             <div class="form-group row">
                 <label for="username" class="col col-form-label text-md-right">{{ form.favorite.label }}</label>
                 <div class="col">
@@ -44,15 +56,12 @@
                     {{ form.line }}
                 </div>
             </div>
-
             <div class="form-group row">
                 <label for="username" class="col col-form-label text-md-right">{{ form.pick.label }}</label>
                 <div class="col">
                     {{ form.pick }}
                 </div>
             </div>
-
-
             <!-- {{ form.submit }} -->
             <button type="submit" class="btn btn-success" value="Submit">
                                     Create
@@ -62,4 +71,29 @@
   </div>
 </div>
 </div>
+
+{{ bootstrap.load_js() }}
+
+<script type="text/javascript">
+
+
+$(document).ready(function(){
+
+        var $radios = $('input:radio[name=pickType]');
+
+        if($radios.is(':checked') === false) {
+            $radios.filter('[id=pickTypeSpread]').prop('checked', true);
+        }
+
+        $('input[type="radio"]').click(function(){
+            if($(this).prop("checked") == true && (this.id == 'pickTypeOverUnder') ){
+                console.log("pickTypeOverUnder is checked.");
+            }
+            else if($(this).prop("checked") == false){
+                console.log("NONpickTypeOverUnder is unchecked.");
+            }
+        });
+});
+
+</script>
 {% endblock %}
