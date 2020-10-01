@@ -12,7 +12,7 @@ from wtforms.validators import (DataRequired,
                                 Email,
                                 EqualTo,
                                 Length,
-                                URL,ValidationError)
+                                URL,ValidationError, Optional)
 
 
 # def my_length_check(form, field):
@@ -28,18 +28,21 @@ def validate_favorite(form, field):
 class LockForm(FlaskForm):
     """Lock form."""
     home = StringField('Home', [
-        DataRequired()])
+        DataRequired()
+        ])
     away = StringField('Away', [
-        DataRequired()])
+        DataRequired()
+        ])
     favorite = StringField('Favorite', [
         DataRequired(), validate_favorite])
     pick = StringField('Pick', [
-        DataRequired()])
+        #DataRequired()
+        ])
     line = FloatField('Line', [
-        DataRequired()])
+        #DataRequired()
+        ])
 
-    ou = FloatField('O/U', [
-        DataRequired()])
+    ou = FloatField('O/U', [Optional()])
 
 
     submit = SubmitField('Submit')
