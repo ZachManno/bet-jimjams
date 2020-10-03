@@ -40,6 +40,7 @@ def validate_pick(form, field):
 
 def validate_ou(form, field):
     if form.ou.data:
+        print("form.ou.data: " + str(form.ou.data))
         if form.line.data:
             raise ValidationError("Line can't have a value for an Over/Under pick, please switch to Spread and clear it out")
         if form.favorite.data:
@@ -67,7 +68,7 @@ class LockForm(FlaskForm):
     pick = StringField('Pick', [validate_pick])
     line = FloatField('Line', [Optional()])
 
-    ou = FloatField('O/U', [Optional()])
+    ou = FloatField('O/U', [Optional(), validate_ou])
 
     submit = SubmitField('Submit')
 
