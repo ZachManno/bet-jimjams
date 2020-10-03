@@ -65,6 +65,7 @@ def home():
                                    (str(week), dynamo.get_picks_for_user_for_week(username, week)))
 
 
+    print("Picks for each week: " + str(picks_for_each_week))
     return render_template('home.html', username=username.capitalize(), picks_for_each_week=picks_for_each_week, titles=titles, header_classes='text-info', table_classes="table-striped table-bordered table-sm")
 
 
@@ -81,3 +82,21 @@ def lock_form_route():
     else:
         print("Not validated")
     return render_template('add-lock.html', form=form)
+
+
+
+# resolve?home=Cowboys&away=Vikings&type=spread&result=w
+@app.route('/resolve')
+def landing_page():
+    username = get_username()
+    home = request.args['home']
+    away = request.args['away']
+    pick_type = request.args['type']
+    result = request.args['result'].upper()
+    print("home: " + home)
+    print("pick_type: " + pick_type)
+    return render_template('index.html')
+
+
+
+

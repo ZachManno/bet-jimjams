@@ -28,14 +28,44 @@
 
 
 
+<div class="container" style="padding-bottom: 4%">
 {% for week, pick_data in picks_for_each_week %}
-  <div class="container" style="padding-bottom: 1%">
+  <div class="container" style="padding-bottom: 2%">
         <div class="row justify-content-center">
             <div class="col-lg-8">
                 <div class="card border border-info">
                     <div class="card-header bg-info text-white"> <b>Week {{week}}</b></div>
                     <div class="card-body">
-                      {{ render_table(pick_data, titles=titles, header_classes=header_classes, table_classes=table_classes) }}
+
+                    <table class="table table-striped table-bordered table-sm">
+                        <thead class="text-info">
+                        <tr>
+                            <th scope="col">Pick</th>
+                            <th scope="col">Outcome</th>
+                            <th scope="col">Game</th>
+                            <th scope="col">Pick Type</th>
+                        </tr>
+                        </thead>
+                        <tbody>
+                          {% for single_pick in pick_data %}
+                          <tr>
+                                <td> {{single_pick.pick}} </td>
+
+                                {%if single_pick.outcome == 'UNDECIDED' %}
+                                <td>
+                                  <button type="button" class="btn btn-secondary" data-toggle="modal" data-target="#resolveModel" data-home="{{single_pick.home}}" data-away="{{single_pick.away}}" data-picktype="{{single_pick.pick_type}}">
+                                      Resolve
+                                  </button>
+                                </td>
+                                {% else %}
+                                <td> {{single_pick.outcome }}</td>
+                                {% endif %}
+                                <td> {{single_pick.game_title}} </td>
+                                <td> {{single_pick.pick_type}} </td>
+                          </tr>
+                          {% endfor %}
+                        </tbody>
+                      </table>
 
                 </div>
             </div>
@@ -43,24 +73,81 @@
     </div>
 </div>
 {% endfor %}
-
-
-
+</div>
 </div>
 
+
+
+<!-- W/L Resolve Modal -->
+<div class="modal fade" id="resolveModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modalGameTitleHeader">Resolve Game</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+                <div class="row justify-content-center">
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="pickWon" name="pickWinOrLoss" class="custom-control-input">
+                  <label class="custom-control-label" for="pickWon">Win</label>
+                </div>
+                <div class="custom-control custom-radio custom-control-inline">
+                  <input type="radio" id="pickLoss" name="pickWinOrLoss" class="custom-control-input">
+                  <label class="custom-control-label" for="pickLoss">Loss</label>
+                </div>
+            </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+        <button type="button" class="btn btn-primary" data-dismiss="modal">Save Result</button>
+      </div>
+    </div>
+  </div>
+</div>
+<!-- END W/L Resolve Modal -->
+
+{{ bootstrap.load_js() }}
 <!-- Script to turn "W" green and "L" cells red-->
 <script type="text/javascript">
                 var tds = document.getElementsByTagName("td");
                 for(var i = 0, j = tds.length; i < j; ++i) {
                   var td_text = tds[i].innerHTML;
-                  if (td_text === 'W') {
+                  if (td_text.trim() == 'W') {
                     tds[i].style.color = "#32CD32";
                   }
-                  if (td_text == 'L') {
+                  if (td_text.trim() == 'L') {
                     tds[i].style.color = "#FF0000"
                   }
-                }
+                };
+
+                // For showing the model, passes the teams for the header
+                $('#resolveModel').on('show.bs.modal', function(e) {
+                  var home = $(e.relatedTarget).data('home');
+                  var away = $(e.relatedTarget).data('away');
+                  var pickType = $(e.relatedTarget).data('picktype');
+                  console.log('home: ' + home);
+                  console.log('away: ' + away);
+                  console.log('pickType: ' + pickType);
+                  $(e.currentTarget).find('h5[id ="modalGameTitleHeader"]').text("Resolve " + away + " @ " + home + " (" + pickType + ")");
+                });
+
+                // For hiding the model, user has selected W or L
+
 
 </script>
+
+<!-- <script type="text/javascript">
+
+  $('#resolveModel').on('show.bs.modal', function(e) {
+    var home = $(e.relatedTarget).data('home');
+    console.log('home: ' + home);
+    //$(e.currentTarget).find('input[name="bookId"]').val(bookId);
+});
+
+</script> -->
 
 {% endblock %}
