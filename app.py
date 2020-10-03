@@ -72,9 +72,11 @@ def home():
 def lock_form_route():
     form = lock_form.LockForm()
     if form.validate_on_submit():
+        username = get_username()
+        print("Form for week " + str(form.week.data) + " validated")
+        p = lock_form.convert_form_to_pick_obj(form)
+        print("Pick obj: " + str(p.__dict__))
         return redirect('/en')
     else:
         print("Not validated")
     return render_template('add-lock.html', form=form)
-
-

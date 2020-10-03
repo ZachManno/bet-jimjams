@@ -30,12 +30,16 @@ class Pick:
             self.pick_string = self.pick
 
     def create_game_title(self):
-        is_favorite_home = self.home == self.favorite
-        self.game_title = self.away + ' @ ' + self.home + ' ('
-        if is_favorite_home:
-            self.game_title += '-' + str(self.line) + ', ' + str(self.ou) + ')'
+        if self.pick_type == 'SPREAD':
+            is_favorite_home = self.home == self.favorite
+            self.game_title = self.away + ' @ ' + self.home + ' ('
+            if is_favorite_home:
+                self.game_title += '-' + str(self.line) + ')'
+            else:
+                self.game_title += '+' + str(self.line) + ')'
         else:
-            self.game_title += '+' + str(self.line) + ', ' + str(self.ou) + ')'
+            self.game_title = self.away + ' @ ' + self.home + ' (' + str(self.ou) + ')'
+
 
 
     @property

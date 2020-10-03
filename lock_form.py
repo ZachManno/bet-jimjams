@@ -15,10 +15,7 @@ from wtforms.validators import (DataRequired,
                                 Length,
                                 URL,ValidationError, Optional)
 
-
-# def my_length_check(form, field):
-#     if len(field.data) > 50:
-#         raise ValidationError('Field must be less than 50 characters')
+import pick
 
 def validate_favorite(form, field):
     if form.favorite.data:
@@ -72,5 +69,16 @@ class LockForm(FlaskForm):
 
     ou = FloatField('O/U', [Optional()])
 
-
     submit = SubmitField('Submit')
+
+
+def convert_form_to_pick_obj(form):
+    if form.ou.data:
+        return pick.Pick(pick=form.pick.data, home=form.home.data, away=form.away.data, ou=form.ou.data, week=form.week.data, pick_type='O/U')
+    else:
+        return pick.Pick(pick=form.pick.data, home=form.home.data, away=form.away.data, favorite=form.favorite.data, line=form.line.data, week=form.week.data, pick_type='SPREAD')
+
+
+
+
+

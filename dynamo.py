@@ -58,6 +58,16 @@ def insert_pick(username: str, pick: pick.Pick):
     pick_record.save()
 
 
+# import pick
+# import dynamo
+# picks = dynamo.get_picks_for_user_for_week('manno', 3)
+# dynamo.delete_pick('manno', picks[0])
+def delete_pick(username: str, pick: pick.Pick):
+    for item in PickModel.scan(PickModel.username.is_in(username) & (PickModel.week == pick.week) & (PickModel.home == pick.home) & (PickModel.away == pick.away) & (PickModel.pick_type == pick.pick_type) & (PickModel.ou == pick.ou) & (PickModel.line == pick.line)):
+        print("deleting: " + item.home + " , " + item.away)
+        item.delete()
+
+
 def pick_record_to_pick_object(pick_record: PickModel):
     return pick.Pick(
         pick=pick_record.pick,
