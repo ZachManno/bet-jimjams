@@ -71,8 +71,6 @@
                           {{ error }} <br>
                         {% endfor %}
                       </small>
-
-                    <!-- </div> -->
                   {% endif %}
 
 
@@ -85,19 +83,39 @@
                 </div>
             </div>
 
+          <!-- OU FIELD-->
             <div class="form-group row" id="overUnderField">
                 <label for="ou" class="col col-form-label">{{ form.ou.label }}</label>
                 <div class="col6">
                     {{ form.ou(class="form-control" + (" is-invalid" if form.ou.errors else ""))  }}
                 </div>
             </div>
+              {% if form.ou.errors %}
+                    <small class="form-text text-muted" style="padding-bottom: 2%">
+                      {% for error in form.ou.errors %}
+                        {{ error }} <br>
+                      {% endfor %}
+                    </small>
+                {% endif %}
+          <!-- END OU FIELD-->
 
+          <!-- PICK FIELD -->
             <div class="form-group row">
                 <label for="pick" class="col col-form-label">{{ form.pick.label }}</label>
                 <div class="col6">
                     {{ form.pick(class="form-control" + (" is-invalid" if form.pick.errors else ""))  }}
                 </div>
             </div>
+              {% if form.pick.errors %}
+                    <small class="form-text text-muted" style="padding-bottom: 2%">
+                      {% for error in form.pick.errors %}
+                        {{ error }} <br>
+                      {% endfor %}
+                    </small>
+                {% endif %}
+          <!-- END PICK FIELD -->
+
+
             <!-- {{ form.submit }} -->
             <button type="submit" class="btn btn-success" value="Submit">
                                     Create
