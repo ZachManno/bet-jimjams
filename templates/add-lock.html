@@ -44,6 +44,21 @@
 
 
             <div class="form-group row">
+                <label for="week" class="col col-form-label">{{ form.week.label }}</label>
+                <div class="col6">
+                    {{ form.week(class="form-control" + (" is-invalid" if form.week.errors else ""))  }}
+                </div>
+            </div>
+              {% if form.favorite.errors %}
+                      <small class="form-text text-muted" style="padding-bottom: 2%">
+                        {% for error in form.week.errors %}
+                          {{ error }} <br>
+                        {% endfor %}
+                      </small>
+              {% endif %}
+
+
+            <div class="form-group row">
                 <label for="home" class="col col-form-label">{{ form.home.label }}</label>
                 <div class="col6">
                     {{ form.home(class="form-control" + (" is-invalid" if form.home.errors else ""))  }}

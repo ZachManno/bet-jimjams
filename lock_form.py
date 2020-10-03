@@ -7,7 +7,8 @@ from wtforms import (StringField,
                      SelectField,
                      TextField,
                      FloatField,
-                     BooleanField)
+                     BooleanField,
+                     IntegerField)
 from wtforms.validators import (DataRequired,
                                 Email,
                                 EqualTo,
@@ -56,6 +57,9 @@ def validate_ou(form, field):
 
 class LockForm(FlaskForm):
     """Lock form."""
+    week = IntegerField('Week', [
+        DataRequired()
+        ])
     home = StringField('Home', [
         DataRequired()
         ])
