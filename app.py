@@ -76,6 +76,7 @@ def lock_form_route():
         print("Form for week " + str(form.week.data) + " validated")
         p = lock_form.convert_form_to_pick_obj(form)
         print("Pick obj: " + str(p.__dict__))
+        dynamo.insert_pick(username, p)
         return redirect('/en')
     else:
         print("Not validated")

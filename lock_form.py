@@ -19,7 +19,7 @@ import pick
 
 def validate_favorite(form, field):
     if form.favorite.data:
-        if (form.favorite.data not in [form.home.data, form.away.data]):
+        if (form.favorite.data.upper() not in [form.home.data.upper(), form.away.data.upper()]):
             raise ValidationError('Favorite must match the home or away team')
         elif form.ou.data:
             raise ValidationError("O/U can't have a value for a Spread pick, please switch to Over/Under and clear it out")
@@ -31,7 +31,7 @@ def validate_pick(form, field):
         if form.pick.data.upper() not in ['OVER', 'UNDER']:
             raise ValidationError("Over under pick must be OVER or UNDER")
     else:
-        if (form.pick.data not in [form.home.data, form.away.data]):
+        if (form.pick.data.upper() not in [form.home.data.upper(), form.away.data.upper()]):
             raise ValidationError('Pick must match the home or away team')
         elif form.ou.data:
             raise ValidationError("O/U can't have a value for a Spread pick, please switch to Over/Under and clear it out")
@@ -74,9 +74,9 @@ class LockForm(FlaskForm):
 
 def convert_form_to_pick_obj(form):
     if form.ou.data:
-        return pick.Pick(pick=form.pick.data, home=form.home.data, away=form.away.data, ou=form.ou.data, week=form.week.data, pick_type='O/U')
+        return pick.Pick(pick=form.pick.data.upper(), home=form.home.data.lower().capitalize(), away=form.away.data.lower().capitalize(), ou=form.ou.data, week=form.week.data, pick_type='O/U')
     else:
-        return pick.Pick(pick=form.pick.data, home=form.home.data, away=form.away.data, favorite=form.favorite.data, line=form.line.data, week=form.week.data, pick_type='SPREAD')
+        return pick.Pick(pick=form.pick.data.lower().capitalize(), home=form.home.data.lower().capitalize(), away=form.away.data.lower().capitalize(), favorite=form.favorite.data, line=form.line.data, week=form.week.data, pick_type='SPREAD')
 
 
 
