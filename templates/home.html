@@ -79,7 +79,7 @@
 
 
 <!-- W/L Resolve Modal -->
-<div class="modal fade" id="resolveModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
+<div class="modal" id="resolveModel" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
@@ -100,10 +100,15 @@
                 </div>
             </div>
 
+            <input type="hidden" id="homeHiddenField" name="homeHiddenField">
+            <input type="hidden" id="awayHiddenField" name="awayHiddenField">
+            <input type="hidden" id="picktypeHiddenField" name="picktypeHiddenField">
+
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-        <button type="button" class="btn btn-primary" data-dismiss="modal">Save Result</button>
+        <!--     -->
+        <button type="button" class="btn btn-primary" id="saveResultButton">Save Result</button>
       </div>
     </div>
   </div>
@@ -129,13 +134,50 @@
                   var home = $(e.relatedTarget).data('home');
                   var away = $(e.relatedTarget).data('away');
                   var pickType = $(e.relatedTarget).data('picktype');
+
+                  // Store the values temporarily in order to pass to database
+                  $('input[id ="homeHiddenField"]').val(home);
+                  $('input[id ="awayHiddenField"]').val(away);
+                  $('input[id ="picktypeHiddenField"]').val(pickType);
+
                   console.log('home: ' + home);
                   console.log('away: ' + away);
                   console.log('pickType: ' + pickType);
+                  // Sets modal header dynamically
                   $(e.currentTarget).find('h5[id ="modalGameTitleHeader"]').text("Resolve " + away + " @ " + home + " (" + pickType + ")");
                 });
 
+                    // Updates the result for W/L
+                    $(document).ready(function () {
+                        var resolvePick = function (){
+                            //existing code
+                              var home = $('input[id ="homeHiddenField"]').val();
+                              var away = $('input[id ="awayHiddenField"]').val();
+                              var pickType = $('input[id ="picktypeHiddenField"]').val();
+
+                              console.log('onsubmit, home: ' + home);
+                              console.log('onsubmit, away: ' + away);
+                              console.log('onsubmit, picktype: ' + pickType);
+
+                                if($('#pickWon').is(':checked')) {
+                                  console.log("Win checked");
+                                }
+                                if($('#pickLoss').is(':checked')) {
+                                  console.log("Loss checked");
+                                }
+
+                            $('#resolveModel').modal('hide');
+                            $('body').removeClass('modal-open');
+                            $('.modal-backdrop').remove();
+                        }
+
+                        $('#saveResultButton').on('click', resolvePick);
+                    });
+
                 // For hiding the model, user has selected W or L
+                $('#resolveModel').on('hidden.bs.modal', function(e) {
+                  console.log("closing model, no submit")
+                });
 
 
 </script>
